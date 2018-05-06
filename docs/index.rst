@@ -97,6 +97,11 @@ API Reference
 .. autoclass:: riopg.cursor.Cursor
     :members:
 
+.. autofunction:: riopg.pool.create_pool
+
+.. autoclass:: riopg.pool.Pool
+    :members:
+
 .. _PostgreSQL: https://www.postgresql.org/
 .. _curio: https://github.com/dabeaz/curio.git
 .. _trio: https://github.com/dabeaz/trio.git
