@@ -12,6 +12,8 @@ import sys
 import sphinx_py3doc_enhanced_theme
 from pkg_resources import DistributionNotFound, get_distribution
 
+sys.path.insert(0, os.path.abspath(".."))
+
 try:
     _release = get_distribution('riopg')
 except DistributionNotFound:
@@ -82,12 +84,13 @@ pygments_style = 'sphinx'
 html_theme = "sphinx_py3doc_enhanced_theme"
 html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
 
+html_theme_options = {
+    'bodyfont': '"Cabin",Arial,sans-serif',
+    'codefont': "'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', "
+                "'Courier New', monospace",
+    'googlewebfonturl': 'https://fonts.googleapis.com/css?family=Cabin'
+}
 
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
-# html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
