@@ -38,6 +38,30 @@ async def create_pool(dsn: str, pool_size: int = 12, *,
     return pool
 
 
+class _PoolConnectionAcquirer:
+    """
+    A helper class that allows doing ``async with pool.acquire()``.
+    """
+
+    def __init__(self, pool: 'Pool'):
+        """
+        :param pool: The :class:`.Pool` to use.
+        """
+        self._pool = pool
+        self._conn = None
+
+    async def __aenter__(self) -> 'md_connection.Connection':
+        self._conn = await self._pool._acquire()
+        return self._conn
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self._pool.release(self._conn)
+        return False
+
+    def __await__(self):
+        return self._pool.acquire().__await__()
+
+
 class Pool(object):
     """
     Represents a pool of connections.
@@ -62,7 +86,7 @@ class Pool(object):
         await conn.open(self.dsn)
         return conn
 
-    async def acquire(self) -> 'md_connection.Connection':
+    async def _acquire(self) -> 'md_connection.Connection':
         """
         Acquires a new connection.
 
@@ -76,6 +100,13 @@ class Pool(object):
             conn = await self._make_new_connection()
 
         return conn
+
+    def acquire(self) -> '_PoolConnectionAcquirer':
+        """
+        Acquires a connection from the pool. This returns an object that can be used with
+        ``async with`` to automatically release it when done.
+        """
+        return _PoolConnectionAcquirer(self)
 
     async def release(self, conn: 'md_connection.Connection'):
         """
