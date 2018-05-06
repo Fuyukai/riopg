@@ -10,6 +10,7 @@ name = "pypi"
 trio = ">=0.2.0"
 "psycopg2" = ">=2.7"
 curio = "*"
+"sphinx-py3doc-enhanced-theme" = "*"
 
 
 [dev-packages]

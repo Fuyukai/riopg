@@ -25,8 +25,8 @@ setup(
         "setuptools_scm",
     ],
     install_requires=[
-        "multio~=0.2.0",
-        "psycopg2~=2.7",
+        "multio>=0.2.0,<0.4.0",
+        "psycopg2>=2.7,<2.8",
     ],
     extras_require={
     },

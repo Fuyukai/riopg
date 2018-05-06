@@ -16,9 +16,8 @@
 .. currentmodule:: riopg.cursor
 """
 from functools import partial
-from typing import Any, Dict, Tuple, Union, Sequence, List
-
 from psycopg2._psycopg import cursor
+from typing import Any, Dict, List, Sequence, Tuple, Union
 
 from riopg import connection as md_connection
 

@@ -1,0 +1,4 @@
+sphinx>=1.7.0
+sphinx_autodoc_typehints
+sphinxcontrib-trio
+sphinx_py3doc_enhanced_theme

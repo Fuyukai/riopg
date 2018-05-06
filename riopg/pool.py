@@ -35,7 +35,6 @@ async def create_pool(dsn: str, pool_size: int = 12, *,
     :return: A new :class:`.Pool`.
     """
     pool = Pool(dsn, pool_size, connection_factory=connection_factory)
-    await pool._init()
     return pool
 
 
@@ -85,4 +84,5 @@ class Pool(object):
         :param conn: The :class:`.Connection` to release back to the connection pool.
         """
         await self._sema.release()
+        await conn.reset()
         self._connections.append(conn)
