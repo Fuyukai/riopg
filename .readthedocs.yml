@@ -1,0 +1,9 @@
+## Read the docs config file.
+
+# enable 3.6
+build:
+  image: latest
+
+python:
+   version: 3.6
+   pip_install: true
