@@ -15,7 +15,7 @@ setup(
     packages=[
         "riopg",
     ],
-    url="https://github.com/SunDwarf",
+    url="https://github.com/Fuyukai/riopg",
     license="LGPLv3",
     author="Laura Dickinson",
     author_email="l@veriny.tf",
