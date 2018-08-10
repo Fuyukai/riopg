@@ -29,7 +29,14 @@ setup(
         "psycopg2>=2.7,<2.8",
     ],
     extras_require={
+        "tests": [
+            "pytest",
+            "pytest-cov",
+            "codecov",
+            "trio>=0.5.0",
+            "curio>=0.8"
+        ]
     },
-    test_requires=[],
-    python_requires=">=3.5.2",
+    tests_require=[],
+    python_requires=">=3.6.0",
 )

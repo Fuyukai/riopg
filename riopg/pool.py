@@ -71,10 +71,18 @@ class Pool(object):
                  connection_factory: 'Callable[[], md_connection.Connection]' = None):
         self.dsn = dsn
         self._pool_size = pool_size
-        self._connection_factory = connection_factory or md_connection.Connection
+        self._connection_factory = connection_factory or md_connection.Connection.open
 
         self._sema = multio.Semaphore(pool_size)
         self._connections = collections.deque()
+        self._closed = False
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+        return False
 
     async def _make_new_connection(self) -> 'md_connection.Connection':
         """
@@ -82,8 +90,7 @@ class Pool(object):
 
         :return: A new :class:`.Connection` or subclass of.
         """
-        conn = self._connection_factory()
-        await conn.open(self.dsn)
+        conn = await self._connection_factory(self.dsn)
         return conn
 
     async def _acquire(self) -> 'md_connection.Connection':
@@ -106,6 +113,9 @@ class Pool(object):
         Acquires a connection from the pool. This returns an object that can be used with
         ``async with`` to automatically release it when done.
         """
+        if self._closed:
+            raise RuntimeError("The pool is closed")
+
         return _PoolConnectionAcquirer(self)
 
     async def release(self, conn: 'md_connection.Connection'):
@@ -114,6 +124,21 @@ class Pool(object):
 
         :param conn: The :class:`.Connection` to release back to the connection pool.
         """
-        await self._sema.release()
+        if conn is None:
+            raise ValueError("Connection cannot be none")
+
+        await multio._maybe_await(self._sema.release())
+
+        if conn._connection.closed:
+            # thanks a lot
+            return
+
         await conn.reset()
         self._connections.append(conn)
+
+    async def close(self):
+        """
+        Closes this pool.
+        """
+        for connection in self._connections:
+            await connection.close()

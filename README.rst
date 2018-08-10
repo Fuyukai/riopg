@@ -1,6 +1,5 @@
 .. image:: https://img.shields.io/pypi/v/riopg.svg
     :alt: PyPI
-
 .. image:: https://img.shields.io/badge/docs-read%20now-blue.svg
    :target: https://riopg.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status

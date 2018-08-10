@@ -45,6 +45,13 @@ class Connection(object):
         #: time.
         self._lock = multio.Lock()
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+        return False
+
     # catch-all handler
     def __getattr__(self, item):
         original = getattr(self._connection, item)
@@ -127,3 +134,10 @@ class Connection(object):
         cur = md_cursor.Cursor(self)
         await cur.open()
         return cur
+
+    async def close(self):
+        """
+        Closes this connection.
+        """
+        await self._do_async(self._connection.reset)
+        self._connection.close()  # can't do this async - raises an interfaceerror...
