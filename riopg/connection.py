@@ -135,6 +135,24 @@ class Connection(object):
         await cur.open()
         return cur
 
+    async def commit(self):
+        """
+        Commits the current transaction.
+        """
+        return await self._do_async(self._connection.commit)
+
+    async def rollback(self):
+        """
+        Rolls back the current transaction.
+        """
+        return await self._do_async(self._connection.rollback)
+
+    async def reset(self):
+        """
+        Resets the current transaction.
+        """
+        return await self._do_async(self._connection.reset)
+
     async def close(self):
         """
         Closes this connection.
