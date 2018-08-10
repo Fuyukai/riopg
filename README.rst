@@ -1,8 +1,13 @@
-.. image:: https://img.shields.io/pypi/v/riopg.svg
+.. image:: https://img.shields.io/pypi/v/riopg.svg?style=for-the-badge
     :alt: PyPI
-.. image:: https://img.shields.io/badge/docs-read%20now-blue.svg
+.. image:: https://img.shields.io/badge/docs-read%20now-blue.svg?style=for-the-badge
    :target: https://riopg.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+.. image:: https://img.shields.io/circleci/project/github/Fuyukai/riopg.svg?style=for-the-badge
+    :alt: CircleCI
+    :target: https://circleci.com/gh/Fuyukai/riopg/
+.. image:: https://img.shields.io/codecov/c/github/Fuyukai/riopg.svg?style=for-the-badge
+    :alt: Codecov
 
 riopg
 -----
