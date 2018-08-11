@@ -59,7 +59,7 @@ class _PoolConnectionAcquirer:
         return False
 
     def __await__(self):
-        return self._pool.acquire().__await__()
+        return self._pool._acquire().__await__()
 
 
 class Pool(object):
@@ -142,3 +142,5 @@ class Pool(object):
         """
         for connection in self._connections:
             await connection.close()
+
+        self._closed = True
