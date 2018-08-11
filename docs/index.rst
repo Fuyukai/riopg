@@ -54,6 +54,18 @@ connection, you can use :meth:`.Connection.open` like so:
     # must be called from an async context
     conn = await Connection.open("postgresql://127.0.0.1/postgres")
 
+It is recommended you use this connection as an async context manager:
+
+.. code-block:: python3
+
+   async with conn:
+      ...
+
+   async with (await Connection.open(...)) as connection:
+      ...
+
+This will automatically close the connection when you are done with it.
+
 The connection object is intentionally similar to a psycopg2 connection object. For example, to
 open a cursor and perform a query:
 
@@ -62,6 +74,13 @@ open a cursor and perform a query:
     cur = await conn.cursor()
     await cur.execute("SELECT 1;")
     result = await cur.fetchone()
+
+Like above, it is recommended to use ``async with`` with the cursor:
+
+.. code-block:: python3
+
+   async with (await conn.cursor()) as cursor:
+      ...
 
 Most methods on a :class:`.Connection` or a :class:`.Cursor` are wrapped in an async wrapper;
 they will perform the task then automatically read/write to the socket as appropriate. No threads
@@ -86,7 +105,8 @@ instance of ``Pool`` with :meth:`.pool.create_pool`, like so:
 .. code-block:: python
 
     pool = await create_pool("postgresql://127.0.0.1/postgres")
-    conn = await pool.acquire()
+    async with pool.acquire() as connection:
+      ...
 
 API Reference
 -------------
