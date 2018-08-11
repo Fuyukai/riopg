@@ -64,6 +64,14 @@ async def test_cursor():
             await cur.scroll(1)
             assert (await cur.fetchmany(2)) == [("gggg",), ("eeee",)]
 
+            await cur.execute("SELECT * FROM users ORDER BY id;")
+            counter = 0
+            async for i in cur:
+                assert len(i) == 3
+                counter += 1
+
+            assert counter == 3
+
 
 async def test_pool():
     pool = await get_pool()
