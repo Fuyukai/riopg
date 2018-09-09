@@ -119,19 +119,19 @@ class Connection(object):
         self._sock = socket.fromfd(self._connection.fileno(), socket.AF_INET, socket.SOCK_STREAM)
         await self._wait_callback()
 
-    def _cursor(self):
+    def _cursor(self, **kwargs):
         """
         Internal implementation of acquiring a cursor.
         """
-        return self._connection.cursor()
+        return self._connection.cursor(**kwargs)
 
-    async def cursor(self) -> 'md_cursor.Cursor':
+    async def cursor(self, **kwargs) -> 'md_cursor.Cursor':
         """
         Gets a new cursor object.
 
         :return: A :class:`.cursor.Cursor` object attached to this connection.
         """
-        cur = md_cursor.Cursor(self)
+        cur = md_cursor.Cursor(self, kwargs)
         await cur.open()
         return cur
 

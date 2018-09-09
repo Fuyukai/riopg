@@ -27,11 +27,12 @@ class Cursor(object):
     Wraps a :class:`psycopg2.cursor` object.
     """
 
-    def __init__(self, connection: 'md_connection.Connection'):
+    def __init__(self, connection: 'md_connection.Connection', kwargs):
         """
         :param connection: The :class:`.Connection` object this cursor was created under.
         """
         self._connection = connection
+        self._kwargs = kwargs
 
         #: The underlying cursor object.
         self._cursor = None  # type: cursor
@@ -42,7 +43,7 @@ class Cursor(object):
 
         This is usually called automatically by :meth:`.Connection.open`.
         """
-        self._cursor = await self._connection._do_async(self._connection._cursor)
+        self._cursor = await self._connection._do_async(partial(self._connection._cursor, **self._kwargs))
 
     # catch-all handler
     def __getattr__(self, item):
