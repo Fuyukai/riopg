@@ -133,7 +133,6 @@ class Pool(object):
             # thanks a lot
             return
 
-        await conn.reset()
         self._connections.append(conn)
 
     async def close(self):

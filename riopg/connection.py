@@ -113,7 +113,7 @@ class Connection(object):
 
         :param dsn: The DSN to connect with.
         """
-        self._connection = connect(dsn)
+        self._connection = connect(dsn, async_=True)
         # the socket is required for trio to eat
         # TODO: not AF_INET
         self._sock = socket.fromfd(self._connection.fileno(), socket.AF_INET, socket.SOCK_STREAM)
@@ -135,27 +135,8 @@ class Connection(object):
         await cur.open()
         return cur
 
-    async def commit(self):
-        """
-        Commits the current transaction.
-        """
-        return await self._do_async(self._connection.commit)
-
-    async def rollback(self):
-        """
-        Rolls back the current transaction.
-        """
-        return await self._do_async(self._connection.rollback)
-
-    async def reset(self):
-        """
-        Resets the current transaction.
-        """
-        return await self._do_async(self._connection.reset)
-
     async def close(self):
         """
         Closes this connection.
         """
-        await self._do_async(self._connection.reset)
         self._connection.close()  # can't do this async - raises an interfaceerror...

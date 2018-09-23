@@ -52,11 +52,10 @@ async def test_cursor():
                               "id;")
             rows = await cur.fetchall()
             assert rows == [("ffff", True), ("eeee", True)]
-            await conn.commit()
 
             await cur.execute("START TRANSACTION;")
             await cur.execute("INSERT INTO users VALUES (4, 'hhhh', true)")
-            await conn.reset()
+            await cur.execute("ROLLBACK;")
             await cur.execute("SELECT COUNT(*) FROM users;")
             assert (await cur.fetchone()) == (3,)
 
@@ -84,7 +83,6 @@ async def test_pool():
 
         assert len(pool._connections) == 1
         async with pool.acquire() as conn2:
-            print(conn2._connection)
             assert conn2 == conn, "Connection was not reused"
             await conn2.close()
 
