@@ -11,6 +11,7 @@ For more information, see the docs at https://riopg.readthedocs.io/en/latest/ .
 
 
 .. |pypi| image:: https://img.shields.io/pypi/v/riopg.svg?style=for-the-badge
+    :target: https://pypi.org/project/riopg/
     :alt: PyPI
 .. |docs| image:: https://img.shields.io/badge/docs-read%20now-blue.svg?style=for-the-badge
    :target: https://riopg.readthedocs.io/en/latest/?badge=latest
@@ -19,4 +20,5 @@ For more information, see the docs at https://riopg.readthedocs.io/en/latest/ .
     :alt: CircleCI
     :target: https://circleci.com/gh/Fuyukai/riopg/
 .. |cov| image:: https://img.shields.io/codecov/c/github/Fuyukai/riopg.svg?style=for-the-badge
+    :target: https://codecov.io/gh/Fuyukai/riopg
     :alt: Codecov
